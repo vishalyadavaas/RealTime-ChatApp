@@ -1,6 +1,7 @@
-require("dotenv").config();
-const connectDB = require("../lib/database");
-const User = require("../models/user.model");
+import dotenv from 'dotenv';
+import connectDB from '../lib/database.js';
+import User from '../models/user.model.js';
+dotenv.config();
 
 const seedUsers = [
   // Female Users

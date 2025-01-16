@@ -1,10 +1,13 @@
-const express = require('express');
-const {app, server} = require('./lib/socket');
-require('dotenv').config();
-const cookieParser = require('cookie-parser');
-const cors = require('cors');
-const path = require('path');
-
+import express from 'express';
+import { app, server } from './lib/socket.js';
+import dotenv from 'dotenv';
+import cookieParser from 'cookie-parser';
+import cors from 'cors';
+import path from 'path';
+import authRoutes from './routes/auth.route.js';
+import messageRoutes from './routes/message.route.js';
+dotenv.config();
+import connectDB from './lib/database.js'
 
 const PORT = process.env.PORT;
 
@@ -19,17 +22,15 @@ app.use(cors({
     credentials: true
 }));
 
-app.use('/api/auth', require('./routes/auth.route'));
-app.use('/api/messages', require('./routes/message.route'));
+app.use('/api/auth', authRoutes);
+app.use('/api/messages', messageRoutes);
 
 app.get('/', (req, res) => {
     res.send('Hello World');
 })
 
-const connectDB = require('./lib/database');
 connectDB();
 
-const __dirname = path.resolve();
 if(process.env.NODE_ENV === 'production'){
     app.use(express.static(path.join(__dirname, '../frontend/dist')));
 

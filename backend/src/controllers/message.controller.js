@@ -1,10 +1,9 @@
-const { default: cloudinary } = require('../lib/cloudinary');
-const { getReceiverSocket,io } = require('../lib/socket');
+import cloudinary from '../lib/cloudinary.js';
+import { getReceiverSocket, io } from '../lib/socket.js';
+import Message from '../models/message.model.js';
+import User from '../models/user.model.js';
 
-const Message = require('../models/message.model');
-const User = require('../models/user.model');
-
-exports.getUserForSidebar = async (req, res) => {
+export const getUserForSidebar = async (req, res) => {
     try {
         const loggedInUserId = req.user._id;
         const filteredUsers = await User.find({ _id: { $ne: loggedInUserId } }).select("-password");
@@ -19,7 +18,7 @@ exports.getUserForSidebar = async (req, res) => {
     }
 };
 
-exports.getMessages = async (req, res) => {
+export const getMessages = async (req, res) => {
     try {
         const { id:userToChatId } = req.params;
         const myId = req.user._id;
@@ -41,7 +40,7 @@ exports.getMessages = async (req, res) => {
     }
 };
 
-exports.sendMessage = async (req, res) => {
+export const sendMessage = async (req, res) => {
     try {
         const {text,image} = req.body;
         const { id:receiverId } = req.params;
@@ -62,7 +61,6 @@ exports.sendMessage = async (req, res) => {
 
         await newMessage.save();
 
-        // todo realtime fuctionality goes here => socket.io
         const receiverSocketId = getReceiverSocket(receiverId);
         if(receiverSocketId){
             io.to(receiverSocketId).emit('newMessage', newMessage);

@@ -1,22 +1,23 @@
-const express = require("express");
-const http = require("http");
-const { Server } = require("socket.io");
+import express from 'express';
+import { createServer } from 'http';
+import { Server } from 'socket.io';
 
 const app = express();
-const server = http.createServer(app);
+const server = createServer(app);
 
 const io = new Server(server, {
   cors: {
     origin: ["http://localhost:5173"],
+    credentials: true
   },
 });
 
-function getReceiverSocket (userId) {
-    return userSocketMap[userId];
-}
-
 // used to store online users
 const userSocketMap = {};
+
+function getReceiverSocket(userId) {
+    return userSocketMap[userId];
+}
 
 io.on("connection", (socket) => {
   const userId = socket.handshake.query.userId;
@@ -31,4 +32,4 @@ io.on("connection", (socket) => {
   });
 });
 
-module.exports = { app, server, io, getReceiverSocket };
+export { app, server, io, getReceiverSocket };

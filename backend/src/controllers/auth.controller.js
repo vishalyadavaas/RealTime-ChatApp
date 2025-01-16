@@ -1,12 +1,13 @@
-const bcrypt = require('bcryptjs');
-const User = require('../models/user.model')
-const jwt = require('jsonwebtoken');
-const cloudinary = require('cloudinary').v2;
-require('dotenv').config();
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import User from '../models/user.model.js';
+import cloudinary from '../lib/cloudinary.js';
+import dotenv from 'dotenv';
+dotenv.config();
 
 
 
-exports.signup = async (req, res) => {
+export const signup = async (req, res) => {
     try {
         const { email, fullname, password} = req.body;
         
@@ -66,7 +67,7 @@ exports.signup = async (req, res) => {
     }
 };
 
-exports.login = async (req, res) => {
+export const login = async (req, res) => {
    try {
     const { email, password } = req.body;
     // Check if all fields are provided
@@ -128,7 +129,7 @@ exports.login = async (req, res) => {
    }
 };
 
-exports.logout = async (req, res) => {
+export const logout = async (req, res) => {
     try {
         res.clearCookie('token');
         return res.status(200).json({
@@ -145,7 +146,7 @@ exports.logout = async (req, res) => {
     }
 };
 
-exports.updateProfile = async (req, res) => {
+export const updateProfile = async (req, res) => {
     try {
         const { profilePicture } = req.body;
         const userId = req.user._id;
@@ -183,7 +184,7 @@ exports.updateProfile = async (req, res) => {
     }
 };
 
-exports.checkAuth = async (req, res) => {
+export const checkAuth = async (req, res) => {
     try {
         return res.status(200).json({
             success: true,

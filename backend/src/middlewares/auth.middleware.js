@@ -1,7 +1,9 @@
-const jwt = require('jsonwebtoken');
-const User = require('../models/user.model');
+import jwt from 'jsonwebtoken';
+import User from '../models/user.model.js';
+import dotenv from 'dotenv';
+dotenv.config();
 
-exports.protectRoute = async (req, res, next) => {
+export const protectRoute = async (req, res, next) => {
     try {
         // Get the token from the cookie
         const token = req.cookies.token;
@@ -29,16 +31,14 @@ exports.protectRoute = async (req, res, next) => {
                 success: false,
                 message: 'User not found'
             });
-        } else {
-            req.user = user;
-            next();
         }
+
+        req.user = user;
+        next();
     } catch (error) {
-        return res.status(500).json({
+        return res.status(401).json({
             success: false,
-            message: 'Internal server error',
-            error: error.message
+            message: 'Unauthorized'
         });
-        
     }
 };
