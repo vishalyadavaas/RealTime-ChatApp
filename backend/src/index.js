@@ -28,7 +28,7 @@ app.get('/', (req, res) => {
 const connectDB = require('./lib/database');
 connectDB();
 
-const __dirname = path.resolve();
+
 if(process.env.NODE_ENV === 'production'){
     app.use(express.static(path.join(__dirname, '../frontend/dist')));
 
