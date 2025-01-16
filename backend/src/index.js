@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const path = require('path');
 
+
 const PORT = process.env.PORT;
 
 app.use(express.json({ limit: '5mb' }));
@@ -28,7 +29,7 @@ app.get('/', (req, res) => {
 const connectDB = require('./lib/database');
 connectDB();
 
-
+const __dirname = path.resolve();
 if(process.env.NODE_ENV === 'production'){
     app.use(express.static(path.join(__dirname, '../frontend/dist')));
 
